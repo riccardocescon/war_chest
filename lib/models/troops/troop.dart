@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-abstract class Troop {
+abstract class Troop<T> {
+  int get troopNumber;
   Color get color;
-  Widget draw(double size) {
+  Widget draw(double size, {Widget? child}) {
     return Container(
       width: size * 0.75,
       height: size * 0.75,
-      decoration: const BoxDecoration(
-        color: Colors.red,
+      decoration: BoxDecoration(
+        color: color,
         shape: BoxShape.circle,
       ),
+      child: child,
     );
   }
+
+  T copy();
 }

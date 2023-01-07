@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:war_chest/models/commander.dart';
+import 'package:war_chest/models/supply.dart';
+import 'package:war_chest/models/troops/berserker.dart';
+import 'package:war_chest/models/troops/marshal.dart';
+import 'package:war_chest/models/troops/pikeman.dart';
 import 'package:war_chest/models/troops/troop.dart';
+import 'package:war_chest/models/troops/warden.dart';
 import 'package:war_chest/utils/map_utils.dart';
 import 'package:war_chest/widgets/cell.dart';
 import 'package:war_chest/widgets/standard_map.dart';
+import 'package:war_chest/widgets/user_section.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -11,13 +18,22 @@ class GamePage extends StatefulWidget {
   State<GamePage> createState() => _GamePageState();
 }
 
-class _GamePageState<T extends Troop> extends State<GamePage> {
+class _GamePageState<T extends Troop<dynamic>> extends State<GamePage> {
   double get width => MediaQuery.of(context).size.width;
   double get height => MediaQuery.of(context).size.height;
 
   Cell? _startingCell;
   final MapNotifier _notifier = MapNotifier();
   StandardMap? _map;
+
+  late Commander commander1;
+
+  @override
+  void initState() {
+    List<Troop> troops1 = [Berserker(), Pikeman(), Marshal(), Warden()];
+    commander1 = Commander(troops1);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +80,10 @@ class _GamePageState<T extends Troop> extends State<GamePage> {
                 ),
               );
             },
+          ),
+          Positioned(
+            bottom: height * 0.05,
+            child: UserSection(commander: commander1),
           ),
         ],
       ),

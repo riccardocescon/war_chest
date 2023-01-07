@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:war_chest/models/troops/troop.dart';
 
-class Marshal extends Troop {
+class Berserker extends Troop<Berserker> {
   @override
   int troopNumber = 5;
 
   @override
-  Color get color => Colors.red;
+  Color get color => Colors.green;
 
   @override
-  Marshal copy() {
-    return Marshal();
+  Berserker copy() {
+    return Berserker();
   }
 }

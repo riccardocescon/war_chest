@@ -67,7 +67,6 @@ class _StandardMapState extends State<StandardMap> {
     for (int i = 0; i < 47; i++) {
       _cells.add(_generateCell(i + 1));
     }
-    _cells[17].notifier.onTroopUpdate(Marshal());
     widget.notifier.addListener(_handleNotification);
 
     super.initState();
