@@ -3,6 +3,7 @@ import 'package:war_chest/clippers/hexagon_clipper.dart';
 import 'package:war_chest/models/troops/troop.dart';
 import 'package:war_chest/utils/enums.dart';
 import 'package:war_chest/utils/map_utils.dart';
+import 'package:war_chest/utils/extentions.dart';
 
 class CellNotifier extends ChangeNotifier {
   void onUpdate() {
@@ -20,16 +21,65 @@ class Cell extends StatefulWidget {
   Cell({
     super.key,
     required this.id,
+    this.mapCoords = -1,
     this.isTeamMode = false,
     this.isZone = false,
     this.claimedBy,
     required this.onCellSelected,
   });
 
+  Cell.fromType({
+    super.key,
+    required this.id,
+    required this.mapCoords,
+    required MapCellType type,
+    required this.onCellSelected,
+  }) {
+    switch (type) {
+      case MapCellType.empty:
+        isTeamMode = false;
+        isZone = false;
+        claimedBy = null;
+        break;
+      case MapCellType.normal:
+        isTeamMode = false;
+        isZone = false;
+        claimedBy = null;
+        break;
+      case MapCellType.zone:
+        isTeamMode = false;
+        isZone = true;
+        claimedBy = null;
+        break;
+      case MapCellType.team:
+        isTeamMode = true;
+        isZone = false;
+        claimedBy = null;
+        break;
+      case MapCellType.teamZone:
+        isTeamMode = true;
+        isZone = true;
+        claimedBy = null;
+        break;
+      case MapCellType.whiteZone:
+        isTeamMode = true;
+        isZone = true;
+        claimedBy = Team.white;
+        break;
+      case MapCellType.blackZone:
+        isTeamMode = true;
+        isZone = true;
+        claimedBy = Team.black;
+        break;
+    }
+  }
+
   final int id;
-  final bool isTeamMode;
-  final bool isZone;
-  final Team? claimedBy;
+  final int mapCoords;
+  late final bool isTeamMode;
+  late final bool isZone;
+  late final Team? claimedBy;
+  final List<Cell> neighbors = <Cell>[];
 
   final void Function(Cell) onCellSelected;
   final CellNotifier notifier = CellNotifier();
@@ -52,7 +102,20 @@ class _CellState extends State<Cell> {
   @override
   Widget build(BuildContext context) {
     if (widget.notifier.troop == null) {
-      return finalHexagon();
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          finalHexagon(),
+          Text(
+            widget.mapCoords.toString(),
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
     } else {
       return Stack(
         alignment: Alignment.center,

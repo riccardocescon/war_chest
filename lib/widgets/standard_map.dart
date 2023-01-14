@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:war_chest/models/troops/marshal.dart';
-import 'package:war_chest/utils/enums.dart';
+import 'package:war_chest/interfaces/imap.dart';
+import 'package:war_chest/models/troops/troop.dart';
 import 'package:war_chest/utils/map_utils.dart';
+import 'package:war_chest/utils/maps.dart';
 import 'package:war_chest/widgets/cell.dart';
 
 class MapNotifier extends ChangeNotifier {
@@ -32,41 +33,29 @@ class StandardMap extends StatefulWidget {
   State<StandardMap> createState() => _StandardMapState();
 }
 
-class _StandardMapState extends State<StandardMap> {
-  final List<Cell> _cells = [];
-
+class _StandardMapState extends State<StandardMap> with IMap {
   double get mapHeigth => MapUtils.getMapHeigth(context);
 
-  // Pre-processed data
-  final List<int> _teamCells = [1, 2, 3, 4, 5, 43, 44, 45, 46, 47];
-  final List<int> _zoneCells = [
-    2,
-    3,
-    8,
-    11,
-    14,
-    15,
-    18,
-    30,
-    33,
-    34,
-    37,
-    40,
-    45,
-    46
-  ];
-  final Map<int, Team> _claimedCells = <int, Team>{
-    14: Team.white,
-    15: Team.black,
-    33: Team.white,
-    34: Team.black,
-  };
+  //#region Overrides
+
+  @override
+  bool canMove(Troop troop, Cell troopCell) {
+    return true;
+  }
+
+  //#endregion
 
   @override
   void initState() {
-    for (int i = 0; i < 47; i++) {
-      _cells.add(_generateCell(i + 1));
-    }
+    // for (int i = 0; i < 47; i++) {
+    //   cells.add(_generateCell(i + 1));
+    // }
+    cells.addAll(
+      Maps.getMap(
+        onCellSelected: widget.onCellSelected,
+        map: MapType.standard,
+      ),
+    );
     widget.notifier.addListener(_handleNotification);
 
     super.initState();
@@ -77,16 +66,6 @@ class _StandardMapState extends State<StandardMap> {
     final targetCell = widget.notifier._targetCell;
     startingCell!.notifier.onUpdate();
     targetCell!.notifier.onUpdate();
-  }
-
-  Cell _generateCell(int id) {
-    return Cell(
-      id: id,
-      isTeamMode: _teamCells.contains(id),
-      isZone: _zoneCells.contains(id),
-      claimedBy: _claimedCells[id],
-      onCellSelected: widget.onCellSelected,
-    );
   }
 
   @override
@@ -117,7 +96,7 @@ class _StandardMapState extends State<StandardMap> {
   Widget _centralColumn(hexSize) => Column(
         children: List.generate(
           7,
-          (index) => _cells[index + 20],
+          (index) => cells[index + 20],
         ),
       );
 
@@ -126,7 +105,7 @@ class _StandardMapState extends State<StandardMap> {
         child: Column(
           children: List.generate(
             6,
-            (index) => _cells[index + (invert ? 14 : 27)],
+            (index) => cells[index + (invert ? 14 : 27)],
           ),
         ),
       );
@@ -136,7 +115,7 @@ class _StandardMapState extends State<StandardMap> {
         child: Column(
           children: List.generate(
             5,
-            (index) => _cells[index + (invert ? 9 : 33)],
+            (index) => cells[index + (invert ? 9 : 33)],
           ),
         ),
       );
@@ -145,7 +124,7 @@ class _StandardMapState extends State<StandardMap> {
         child: Column(
           children: List.generate(
             4,
-            (index) => _cells[index + (invert ? 5 : 38)],
+            (index) => cells[index + (invert ? 5 : 38)],
           ),
         ),
       );
@@ -155,7 +134,7 @@ class _StandardMapState extends State<StandardMap> {
         child: Column(
           children: List.generate(
             3,
-            (index) => _cells[index + (invert ? 2 : 42)],
+            (index) => cells[index + (invert ? 2 : 42)],
           ),
         ),
       );
@@ -165,7 +144,7 @@ class _StandardMapState extends State<StandardMap> {
         child: Column(
           children: List.generate(
             2,
-            (index) => _cells[index + (invert ? 0 : 45)],
+            (index) => cells[index + (invert ? 0 : 45)],
           ),
         ),
       );

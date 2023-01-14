@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:war_chest/api/map_api.dart';
 import 'package:war_chest/models/commander.dart';
 import 'package:war_chest/models/supply.dart';
 import 'package:war_chest/models/troops/berserker.dart';
@@ -24,7 +25,7 @@ class _GamePageState<T extends Troop<dynamic>> extends State<GamePage> {
 
   Cell? _startingCell;
   final MapNotifier _notifier = MapNotifier();
-  StandardMap? _map;
+  MapApi? _mapApi;
 
   late Commander commander1;
 
@@ -55,15 +56,17 @@ class _GamePageState<T extends Troop<dynamic>> extends State<GamePage> {
               final mapWidth = width;
               final mapHeight = MapUtils.getMapHeigth(context);
 
-              _map ??= StandardMap(
-                height: mapHeight,
-                onCellSelected: _onCellSelected,
-                notifier: _notifier,
+              _mapApi ??= MapApi(
+                map: StandardMap(
+                  height: mapHeight,
+                  onCellSelected: _onCellSelected,
+                  notifier: _notifier,
+                ),
               );
 
               final map = Container(
                 color: Colors.grey.shade900,
-                child: _map,
+                child: _mapApi,
               );
               return InteractiveViewer(
                 minScale: 1,
