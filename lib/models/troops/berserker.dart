@@ -6,6 +6,9 @@ class Berserker extends Troop<Berserker> {
   int troopNumber = 5;
 
   @override
+  int tacticRange = 1;
+
+  @override
   Color get color => Colors.green;
 
   @override

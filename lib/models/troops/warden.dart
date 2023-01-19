@@ -6,6 +6,9 @@ class Warden extends Troop {
   int troopNumber = 4;
 
   @override
+  int tacticRange = 1;
+
+  @override
   Color get color => Colors.blue;
 
   @override

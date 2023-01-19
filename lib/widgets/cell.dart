@@ -84,6 +84,9 @@ class Cell extends StatefulWidget {
   final void Function(Cell) onCellSelected;
   final CellNotifier notifier = CellNotifier();
 
+  bool get isFree => notifier.troop == null;
+  bool get isBusy => notifier.troop != null;
+
   @override
   State<Cell> createState() => _CellState();
 }

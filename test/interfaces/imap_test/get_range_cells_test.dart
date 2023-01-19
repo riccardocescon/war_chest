@@ -15,9 +15,12 @@ class FakeMap extends IMap {
   }
 
   @override
-  bool canMove(Troop troop, Cell troopCell) {
-    return true;
+  List<Cell> canMove(Troop troop, Cell troopCell) {
+    return [];
   }
+
+  @override
+  final List<Cell> cells = [];
 }
 
 void main() {
@@ -62,6 +65,14 @@ void main() {
   });
 
   group("Even Column", () {
+    test(
+      "Even _getRangeCells range 1",
+      () => _getRangeCells(
+        pivotId: 38,
+        range: 1,
+        rangeCells: [37, 30, 31, 39, 45, 44],
+      ),
+    );
     test(
       "Even _getRangeCells range 2",
       () => _getRangeCells(

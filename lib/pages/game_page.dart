@@ -57,11 +57,9 @@ class _GamePageState<T extends Troop<dynamic>> extends State<GamePage> {
               final mapHeight = MapUtils.getMapHeigth(context);
 
               _mapApi ??= MapApi(
-                map: StandardMap(
-                  height: mapHeight,
-                  onCellSelected: _onCellSelected,
-                  notifier: _notifier,
-                ),
+                height: mapHeight,
+                onCellSelected: _onCellSelected,
+                notifier: _notifier,
               );
 
               final map = Container(

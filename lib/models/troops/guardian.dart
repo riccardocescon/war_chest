@@ -8,6 +8,9 @@ class Infantry extends Troop<Infantry> {
   Color get color => Colors.teal.shade400;
 
   @override
+  int tacticRange = 1;
+
+  @override
   Infantry copy() {
     return Infantry();
   }

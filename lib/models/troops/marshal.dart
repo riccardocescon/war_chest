@@ -6,6 +6,9 @@ class Marshal extends Troop {
   int troopNumber = 5;
 
   @override
+  int tacticRange = 2;
+
+  @override
   Color get color => Colors.red;
 
   @override

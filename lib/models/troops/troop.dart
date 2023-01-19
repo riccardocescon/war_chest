@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 abstract class Troop<T> {
   int get troopNumber;
   Color get color;
+  int get tacticRange;
+  int reiforceLevel = 0;
   Widget draw(double size, {Widget? child}) {
     return Container(
       width: size * 0.75,

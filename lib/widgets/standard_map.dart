@@ -23,39 +23,27 @@ class StandardMap extends StatefulWidget {
     required this.height,
     required this.onCellSelected,
     required this.notifier,
+    required this.cells,
   });
 
   final double height;
   final void Function(Cell) onCellSelected;
   final MapNotifier notifier;
+  final List<Cell> cells;
 
   @override
   State<StandardMap> createState() => _StandardMapState();
 }
 
-class _StandardMapState extends State<StandardMap> with IMap {
+class _StandardMapState extends State<StandardMap> {
   double get mapHeigth => MapUtils.getMapHeigth(context);
 
-  //#region Overrides
-
-  @override
-  bool canMove(Troop troop, Cell troopCell) {
-    return true;
-  }
+  List<Cell> get cells => widget.cells;
 
   //#endregion
 
   @override
   void initState() {
-    // for (int i = 0; i < 47; i++) {
-    //   cells.add(_generateCell(i + 1));
-    // }
-    cells.addAll(
-      Maps.getMap(
-        onCellSelected: widget.onCellSelected,
-        map: MapType.standard,
-      ),
-    );
     widget.notifier.addListener(_handleNotification);
 
     super.initState();
